@@ -23,33 +23,42 @@ function App() {
 
   const hundleSubmit = (e) => {
     e.preventDefault();
-    title == "" ? setError(true) : setError(false);
     const newTask = {
       id: Tasks.length,
       title: title,
       isDone: false,
     };
-    // Update state to include the new task
-    setTask((prevTasks) => [...prevTasks, newTask]);
 
-    // Clear the input field
-    setTitle("");
+    if (title == "") {
+      setError(true);
+    } else {
+      setError(false);
+      setTask((prevTasks) => [...prevTasks, newTask]);
+      setTitle("");
+    }
+    
   };
- 
 
   function toggleTask(id) {
-    setTask( (prevTasks) => {
-      return prevTasks.map( (task) => {
+    setTask((prevTasks) => {
+      return prevTasks.map((task) => {
         if (task.id === id) {
           return { ...task, isDone: !task.isDone };
-        
         } else {
           return task;
         }
       });
     });
   }
-  
+
+  function deleteTask(id) {
+    setTask(function (oldTasks) {
+      return oldTasks.filter(function (task) {
+        return task.id !== id;
+      });
+    });
+  }
+
   return (
     <>
       <div className=" flex justify-center py-5">
@@ -78,7 +87,7 @@ function App() {
                       )}
                     </button>
 
-                    <button>
+                    <button onClick={() => deleteTask(task.id)}>
                       <i className="fa-solid fa-trash hover:text-red-300"></i>
                     </button>
                   </div>
