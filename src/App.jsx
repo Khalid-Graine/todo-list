@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 function App() {
   const [title, setTitle] = useState("");
   const [error, setError] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [doneCount, setDoneCount] = useState(0);
   const [Tasks, setTask] = useState([
     {
@@ -62,8 +63,14 @@ function App() {
   useEffect(() => {
     const count = Tasks.reduce((acc, task) => (task.isDone ? acc + 1 : acc), 0);
     setDoneCount(count);
+    
   }, [Tasks]);
-  
+
+  useEffect(() => {
+    setProgress(doneCount / Tasks.length * 100)
+  },[doneCount])
+
+
   return (
     <>
       <div className=" flex justify-center py-5">
@@ -72,6 +79,8 @@ function App() {
             <p>you have totoal of {Tasks.length} taskes</p>
             <p>you have done {doneCount}</p>
           </div>
+          
+          {/* add new task */}
           <form onSubmit={(e) => hundleSubmit(e)} className=" flex gap-2">
             <input
               type="text"
@@ -86,6 +95,14 @@ function App() {
           </form>
           {error && <p className="text-red-400">Please add a task name</p>}
 
+          {/* progress */}
+          <div className="border border-black h-3 ">
+            <div className="bg-green-300 flex h-full transition-all ease-linear delay-200 duration-500" 
+            style={{width: progress + '%'}}></div>
+          </div>
+
+
+          {/* display tasks */}
           <ul className="w-full flex flex-col gap-2">
             {Tasks &&
               Tasks.map((task) => (
