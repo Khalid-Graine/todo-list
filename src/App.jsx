@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [title, setTitle] = useState("");
   const [error, setError] = useState(false);
+  const [doneCount, setDoneCount] = useState(0);
   const [Tasks, setTask] = useState([
     {
       id: 0,
       title: "r r r r r r ",
-      isDone: true,
+      isDone: false,
     },
     {
       id: 1,
@@ -36,7 +37,6 @@ function App() {
       setTask((prevTasks) => [...prevTasks, newTask]);
       setTitle("");
     }
-    
   };
 
   function toggleTask(id) {
@@ -59,24 +59,40 @@ function App() {
     });
   }
 
+  useEffect(() => {
+    const count = Tasks.reduce((acc, task) => (task.isDone ? acc + 1 : acc), 0);
+    setDoneCount(count);
+  }, [Tasks]);
+  
   return (
     <>
       <div className=" flex justify-center py-5">
-        <div className="md:w-6/12 w-full p-2  bg-red-100">
-          <form onSubmit={(e) => hundleSubmit(e)}>
+        <div className="md:w-6/12 w-full p-2 flex flex-col gap-2">
+          <div>
+            <p>you have totoal of {Tasks.length} taskes</p>
+            <p>you have done {doneCount}</p>
+          </div>
+          <form onSubmit={(e) => hundleSubmit(e)} className=" flex gap-2">
             <input
               type="text"
               onChange={(e) => setTitle(e.target.value)}
               value={title}
+              className="h-8 flex-grow pl-1 border border-black"
             />
 
-            <button type="submit">add</button>
+            <button type="submit" className="bg-blue-300 px-5 rounded-sm ">
+              add
+            </button>
           </form>
           {error && <p className="text-red-400">Please add a task name</p>}
-          <ul>
+
+          <ul className="w-full flex flex-col gap-2">
             {Tasks &&
               Tasks.map((task) => (
-                <li key={task.id}>
+                <li
+                  key={task.id}
+                  className="border-black border p-1 flex justify-between"
+                >
                   <div>{task.title}</div>
                   <div className="flex gap-3">
                     <button onClick={() => toggleTask(task.id)}>
