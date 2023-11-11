@@ -7,7 +7,7 @@ function App() {
     {
       id: 0,
       title: "r r r r r r ",
-      isDone: false,
+      isDone: true,
     },
     {
       id: 1,
@@ -26,17 +26,30 @@ function App() {
     title == "" ? setError(true) : setError(false);
     const newTask = {
       id: Tasks.length,
-      title:title,
-      isDone:false,
+      title: title,
+      isDone: false,
     };
-     // Update state to include the new task
-     setTask((prevTasks) => [...prevTasks, newTask]);
+    // Update state to include the new task
+    setTask((prevTasks) => [...prevTasks, newTask]);
 
-     // Clear the input field
-     setTitle("");
-  
-    
+    // Clear the input field
+    setTitle("");
   };
+ 
+
+  function toggleTask(id) {
+    setTask( (prevTasks) => {
+      return prevTasks.map( (task) => {
+        if (task.id === id) {
+          return { ...task, isDone: !task.isDone };
+        
+        } else {
+          return task;
+        }
+      });
+    });
+  }
+  
   return (
     <>
       <div className=" flex justify-center py-5">
@@ -52,15 +65,25 @@ function App() {
           </form>
           {error && <p className="text-red-400">Please add a task name</p>}
           <ul>
-            {Tasks && Tasks.map((task) => (
-              <li key={task.id}>
-                <div>{task.title}</div>
-                <div className="flex gap-3">
-                  <button>done</button>
-                  <button>delete</button>
-                </div>
-              </li>
-            ))}
+            {Tasks &&
+              Tasks.map((task) => (
+                <li key={task.id}>
+                  <div>{task.title}</div>
+                  <div className="flex gap-3">
+                    <button onClick={() => toggleTask(task.id)}>
+                      {task.isDone ? (
+                        <i className="fa-solid fa-check text-blue-500"></i>
+                      ) : (
+                        <i className="fa-solid fa-xmark text-red-500"></i>
+                      )}
+                    </button>
+
+                    <button>
+                      <i className="fa-solid fa-trash hover:text-red-300"></i>
+                    </button>
+                  </div>
+                </li>
+              ))}
           </ul>
         </div>
       </div>
