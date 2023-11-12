@@ -62,7 +62,6 @@ function App() {
     <>
       <div className=" flex justify-center py-5">
         <div className="md:w-6/12 w-full p-2 flex flex-col gap-2">
-          
           <CreateForm
             title={title}
             hundleSubmit={hundleSubmit}
