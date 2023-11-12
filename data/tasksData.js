@@ -1,17 +1,17 @@
 const tasksData = [
     {
       id: 0,
-      title: "r r r r r r ",
-      isDone: false,
+      title: "Go to the gym",
+      isDone: true,
     },
     {
       id: 1,
-      title: "r r r 44444r r r ",
+      title: "Read 30 min",
       isDone: false,
     },
     {
       id: 2,
-      title: "r r r r r r ",
+      title: "walk in  garden",
       isDone: false,
     },
   ];

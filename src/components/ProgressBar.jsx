@@ -1,7 +1,8 @@
 const ProgressBar = ({progress}) => {
     return ( 
-        <div className="border border-black h-3 ">
-            <div className="bg-green-300 flex h-full transition-all  ease-linear delay-100 duration-500" 
+        <div className="border-Bold border-theBorder h-3 rounded-sm ">
+        
+            <div className="bg-primary flex h-full transition-all  ease-linear delay-100 duration-500 " 
             style={{width: progress + '%'}}></div>
           </div>
      );

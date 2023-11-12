@@ -4,6 +4,7 @@ import TasksList from "./components/TasksList";
 import CreateForm from "./components/CreateForm";
 import tasksData from "../data/tasksData";
 import ErrorMessage from "./components/ErrorMessage";
+import HelpButtons from "./HelpButtons";
 
 function App() {
   const [title, setTitle] = useState("");
@@ -26,6 +27,7 @@ function App() {
       setError(false);
       setTask((prevTasks) => [...prevTasks, newTask]);
       setTitle("");
+      setProgress((doneCount / Tasks.length) * 100);
     }
   };
 
@@ -48,32 +50,52 @@ function App() {
       });
     });
   }
+  
+  const CheckAll = () => {
+    setTask((prevTasks) => {
+      return prevTasks.map((task) => {
+          return { ...task, isDone: true }; 
+      });
+    });
+   
+  }
+  
+  const DeleteAll = () => {
+    setTask([]);
+    setDoneCount(0);
+    setProgress(0)
+  }
 
   useEffect(() => {
     const count = Tasks.reduce((acc, task) => (task.isDone ? acc + 1 : acc), 0);
     setDoneCount(count);
-  }, [Tasks]);
-
-  useEffect(() => {
     setProgress((doneCount / Tasks.length) * 100);
-  }, [doneCount]);
+  }, [Tasks,doneCount]);
+
+
+ 
 
   return (
     <>
-      <div className=" flex justify-center py-5">
-        <div className="md:w-6/12 w-full p-2 flex flex-col gap-2">
+      <div className=" flex justify-center p-1 bg-theBackground min-h-screen text-main text-lg">
+        <div className="md:w-5/12 w-full p-2 flex flex-col gap-3 shadow-xl">
+         
           <CreateForm
             title={title}
             hundleSubmit={hundleSubmit}
             setTitle={setTitle}
           />
-          <ErrorMessage error={error} />
+          <ErrorMessage error={error}  />
+         
+          
           <ProgressBar progress={progress} />
+         
           <TasksList
             Tasks={Tasks}
             toggleTask={toggleTask}
             deleteTask={deleteTask}
           />
+          <HelpButtons Tasks={Tasks} DeleteAll={DeleteAll} CheckAll={CheckAll} doneCount={doneCount}  />
         </div>
       </div>
     </>
